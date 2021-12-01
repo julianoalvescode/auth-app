@@ -1,18 +1,31 @@
 import { useAuth } from "hooks";
 import { useEffect } from "react";
-import { HttpClient } from "infra/http/axios-http-client";
+import { HttpClient, setupHttpClient } from "infra/http";
+
+import { withSSRAuth } from "helpers";
 
 export default function Dashboar() {
   const { user } = useAuth();
 
   useEffect(() => {
     HttpClient.get("/me")
-      .then((res) => console.log(res))
+      .then((res) => {})
       .catch((err: any) => {
         console.log(err.message);
-      })
-      .finally((e: any) => console.log(e?.message));
+      });
   }, []);
 
   return <h1>User logged {user?.email}</h1>;
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const HttpRequest = setupHttpClient(ctx);
+
+  const response = await HttpRequest.get("/me");
+
+  console.log(response.data);
+
+  return {
+    props: {},
+  };
+});

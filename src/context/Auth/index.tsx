@@ -3,7 +3,7 @@ import { setCookie, parseCookies, destroyCookie } from "nookies";
 
 import * as I from "./types";
 import Router from "next/router";
-import { HttpClient } from "infra/http/axios-http-client";
+import { HttpClient } from "infra/http";
 export const AuthContext = createContext({} as I.AuthContextData);
 
 export function signOut(): void {
@@ -59,7 +59,18 @@ export function AuthContextProvider({ children }: I.AuthContextProvider) {
 
       setUser({ ...response, email });
 
-      HttpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // HttpClient.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+      HttpClient.interceptors.request.use(
+        async (config) => {
+          config.headers = {
+            Authorization: `Bearer ${token}`,
+          };
+
+          return config;
+        },
+        (error) => Promise.reject(error)
+      );
 
       Router.push("/dashboard");
     } catch (e: any) {

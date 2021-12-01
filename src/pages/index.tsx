@@ -5,9 +5,12 @@ import {
   Flex,
   Stack,
   Button,
+  Heading,
 } from "@chakra-ui/react";
+import { withSSRGuest } from "helpers";
 
 import { useAuth } from "hooks";
+import { GetServerSideProps } from "next";
 import { useForm } from "react-hook-form";
 
 export default function Home() {
@@ -15,7 +18,7 @@ export default function Home() {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm();
 
   return (
@@ -34,13 +37,20 @@ export default function Home() {
           onSubmit={handleSubmit(signIn)}
           spacing="8"
         >
+          <Heading textAlign="center">Facebook</Heading>
+
           <FormControl id="email">
-            <FormLabel>Email address</FormLabel>
-            <Input {...register("email", { required: true })} type="email" />
+            <FormLabel>E-mail</FormLabel>
+            <Input
+              isInvalid={errors?.email?.message}
+              {...register("email", { required: true })}
+              type="email"
+            />
           </FormControl>
           <FormControl id="password">
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Senha</FormLabel>
             <Input
+              isInvalid={errors?.email?.password}
               {...register("password", { required: true })}
               type="password"
             />
@@ -53,3 +63,9 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});
