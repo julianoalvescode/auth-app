@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 
-import { ContextProvider } from "context";
+import { ContextProvider } from "presentation/context";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }: AppProps) {

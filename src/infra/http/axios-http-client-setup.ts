@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
-import { signOut } from "context/Auth";
+import { signOut } from "presentation/context/Auth";
+import { AuthTokenError } from "main/errors/auth-token";
 import { GetServerSidePropsContext } from "next";
 import { parseCookies, setCookie } from "nookies";
 
@@ -92,6 +93,8 @@ export function setupHttpClient(ctx: Context) {
         } else {
           if (process.browser) {
             signOut();
+          } else {
+            return Promise.reject(new AuthTokenError());
           }
         }
       }

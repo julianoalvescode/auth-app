@@ -7,10 +7,9 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
-import { withSSRGuest } from "helpers";
+import { withSSRGuest } from "presentation/helpers";
 
-import { useAuth } from "hooks";
-import { GetServerSideProps } from "next";
+import { useAuth } from "presentation/hooks";
 import { useForm } from "react-hook-form";
 
 export default function Home() {

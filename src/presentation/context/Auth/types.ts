@@ -1,10 +1,5 @@
 import React from "react";
-
-export type User = {
-  email: string;
-  permissions: string[];
-  roles: string[];
-};
+import { User } from "domain/models";
 
 export type SessionResponse = {
   permissions: string[];
@@ -13,11 +8,7 @@ export type SessionResponse = {
   token: string;
 };
 
-export type MeResponse = {
-  email: string;
-  permissions: string[];
-  roles: string[];
-};
+export type MeResponse = User;
 
 export type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>;

@@ -4,6 +4,8 @@ import { setCookie, parseCookies, destroyCookie } from "nookies";
 import * as I from "./types";
 import Router from "next/router";
 import { HttpClient } from "infra/http";
+import { User } from "domain/models";
+
 export const AuthContext = createContext({} as I.AuthContextData);
 
 export function signOut(): void {
@@ -14,7 +16,7 @@ export function signOut(): void {
 }
 
 export function AuthContextProvider({ children }: I.AuthContextProvider) {
-  const [user, setUser] = useState<I.User>({} as I.User);
+  const [user, setUser] = useState<User>({} as User);
   const isAuthenticated = !!user;
 
   useEffect(() => {
@@ -58,8 +60,6 @@ export function AuthContextProvider({ children }: I.AuthContextProvider) {
       });
 
       setUser({ ...response, email });
-
-      // HttpClient.defaults.headers["Authorization"] = `Bearer ${token}`;
 
       HttpClient.interceptors.request.use(
         async (config) => {
